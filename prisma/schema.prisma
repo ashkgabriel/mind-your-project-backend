@@ -1,20 +1,43 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
 model Project {
-  id                Int        @id @default(autoincrement())
-  name              String
-  description       String
-  startDate         DateTime?
-  endDate           DateTime?
-  tasks             Task[]
-  users             UserProject[]
+  id            Int        @id @default(autoincrement())
+  name          String
+  description   String
+  startDate     DateTime?
+  endDate       DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  tasks         Task[]
+  users         UserProject[]
+}
+
+enum TaskStatus {
+  PENDENTE
+  EM_PROGRESSO
+  COMPLETO
+}
+
+enum TaskPriority {
+  BAIXA
+  MEDIA
+  ALTA
 }
 
 model Task {
   id                Int        @id @default(autoincrement())
   name              String
   description       String
-  priority          String?
+  priority          TaskPriority?
   estimatedTime     Int?       // Tempo estimado em minutos
-  status            String
+  status            TaskStatus
   dueDate           DateTime
   projectId         Int
   project           Project    @relation(fields: [projectId], references: [id])
@@ -27,13 +50,19 @@ model Task {
   User User[] @relation("ResponsibleTasks")
 }
 
+enum UserRole {
+  ADMIN
+  DEV
+  MANAGER
+}
+
 model User {
   id                Int        @id @default(autoincrement())
   name              String
   email             String     @unique
   password          String
   photo             String?
-  role              String?
+  role              UserRole?
   registrationDate  DateTime   @default(now())
   tasks             Task[]     @relation("ResponsibleTasks")
   projects          UserProject[]
