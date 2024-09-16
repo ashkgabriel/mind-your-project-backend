@@ -7,9 +7,10 @@ import { ProjectsModule } from "./projects/projects.module";
 import { TasksController } from "./tasks/tasks.controller";
 import { TasksModule } from "./tasks/tasks.module";
 import { TasksService } from "./tasks/tasks.service";
+import { UsersModule } from "./users/users.module";
 
 @Module({
-    imports: [ProjectsModule, PrismaModule, TasksModule],
+    imports: [ProjectsModule, PrismaModule, TasksModule, UsersModule],
     controllers: [AppController, TasksController],
     providers: [AppService, PrismaService, TasksService],
 })

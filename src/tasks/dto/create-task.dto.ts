@@ -3,8 +3,9 @@ import {
     IsInt,
     IsOptional,
     IsString,
-    IsDate,
+    // IsDate,
     Min,
+    IsDateString,
 } from "class-validator";
 
 export enum TaskStatus {
@@ -38,8 +39,8 @@ export class CreateTaskDto {
     @IsEnum(TaskStatus)
     status: TaskStatus;
 
-    @IsDate()
-    dueDate: Date;
+    @IsDateString()
+    dueDate: string;
 
     @IsInt()
     responsibleId: number;
