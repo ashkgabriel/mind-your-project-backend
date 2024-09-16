@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service"; // Assumindo que PrismaService já está configurado
+import { PrismaService } from "../prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { User } from "@prisma/client";
 
 @Injectable()
 export class UsersService {
@@ -11,6 +12,9 @@ export class UsersService {
         return this.prisma.user.create({
             data: createUserDto,
         });
+    }
+    async findOneByEmail(email: string): Promise<User | null> {
+        return this.prisma.user.findUnique({ where: { email } });
     }
 
     async findAll() {
